@@ -1,0 +1,43 @@
+
+example_plant:
+    item: 
+        type: red_rose
+        amount: 1
+        display_name: Example Plant
+        lore:
+            - "The example plant!"
+        unbreakable: true
+    states:
+        init:
+            type: model
+            item: chainmail_boots
+            offset: 0.5, 0, 0.5
+            animations:
+                init_to_final:
+                    to_state: final
+                    conditions:
+                        time_condition:
+                            type: time
+                            time: 10
+        final:
+            type: model
+            item: diamond_boots
+            offset: 0.5, 0, 0.5
+            harvest_rewards:
+                apples_reward:
+                    type: item
+                    items:
+                        apple:
+                            type: apple
+                            amount: 64
+                            display_name: Magical Apple
+                            lore:
+                                - "A magical apple!"
+                            unbreakable: true
+            animations:
+                final_to_init:
+                    to_state: init
+                    conditions:
+                        harvest_condition:
+                            type: harvest
+            

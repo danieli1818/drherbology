@@ -1,0 +1,14 @@
+name: DRHerbology
+version: 0.0.1
+main: drherbology.DRHerbology
+authors: [DanielRottner]
+description: DRHerbology minecraft plugin for a herbology system.
+api-version: 1.12
+load: STARTUP
+
+commands:
+    drherbology:
+        description: drherbology commands.
+        permission: drherbology
+        permission-message: You do not have permission to run this command!
+        usage: /<command>
