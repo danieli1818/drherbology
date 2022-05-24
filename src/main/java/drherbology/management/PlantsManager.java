@@ -207,6 +207,7 @@ public class PlantsManager implements PropertyChangeListener {
 			Location location = plantStateEntry.getKey();
 			PlantState<?> plant = plantStateEntry.getValue();
 			System.out.println("Storing: " + this.storage.store(location, plant));
+			plant.despawnPlant();
 		}
 		System.out.println("Finished saving all!");
 		return true;

@@ -1,14 +1,13 @@
 package drherbology.commands;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import drherbology.management.PlantsManager;
+import drguis.guis.GUI;
+import drherbology.management.PlantsGUIManager;
+import drherbology.plants.PlantsTypes;
 import drherbology.utils.messages.MessagesSender;
 import drherbology.utils.messages.MessagesStorage;
 
@@ -20,17 +19,14 @@ public class DRHerbologyCommands implements CommandExecutor {
 			MessagesSender.getInstance().sendErrorMessage(MessagesStorage.getInstance().getMessage("only_players_command_message"), sender);
 		}
 		Player player = (Player)sender;
-		Block lookingAtBlock = player.getTargetBlock(null, 10);
-		if (lookingAtBlock == null || lookingAtBlock.getType() == Material.AIR) {
-			return false;
+		GUI gui = PlantsGUIManager.getInstance().getGUI();
+		if (gui == null) {
+			System.out.println("GUI is null!");
+			gui = PlantsGUIManager.getInstance().loadGUI(PlantsTypes.getInstance().getPlantTypesItemStacksMap());
+		} else {
+			System.out.println("GUI isn't null!");
 		}
-		Block block = lookingAtBlock.getRelative(BlockFace.UP);
-		if (block == null || block.getType() != Material.AIR) {
-			return false;
-		}
-		System.out.println("Before creating plant!");
-		PlantsManager.getInstance().createPlant(block.getLocation(), "example_plant");
-		System.out.println("After creating plant!");
+		player.openInventory(gui.getInventory(player));
 		return true;
 	}
 

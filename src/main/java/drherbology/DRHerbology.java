@@ -6,6 +6,7 @@ import drherbology.commands.DRHerbologyCommands;
 import drherbology.listeners.GeneralPlantsListener;
 import drherbology.listeners.ModelPlantsListener;
 import drherbology.listeners.PlantsLoaderSaverListener;
+import drherbology.management.PlantsGUIManager;
 import drherbology.management.PlantsManager;
 import drherbology.plants.PlantsTypes;
 import drherbology.plants.conditions.harvest.HarvestConditionsManager;
@@ -46,6 +47,8 @@ public class DRHerbology extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(PlantsLoaderSaverListener.getInstance(), this);
 		
 		ReloaderManager.getInstance().registerReloadable(PlantsTypes.getInstance());
+		
+		PlantsGUIManager.getInstance(this);
 		
 //		FileConfiguration examplePlantTypeFileConfiguration = fcm.getFileConfiguration(typesFolder + "/example_plant.yml");
 //		

@@ -107,4 +107,15 @@ public class PlantsTypes implements Reloadable {
 		return this.loadedFilenames;
 	}
 	
+	public Map<ItemStack, PlantType> getPlantTypesItemStacksMap() {
+		Map<ItemStack, PlantType> plantTypesItemStacksMap = new HashMap<>();
+		for (PlantType plantType : plantsTypes.values()) {
+			ItemStack plantTypeItemStack = plantType.getItemStack();
+			if (plantTypeItemStack != null) {
+				plantTypesItemStacksMap.put(new ItemStack(plantTypeItemStack), plantType);
+			}
+		}
+		return plantTypesItemStacksMap;
+	}
+	
 }
