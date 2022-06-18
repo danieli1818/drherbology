@@ -25,7 +25,6 @@ public class HarvestConditionsManager implements Listener {
 		}
 		Set<HarvestCondition> harvestConditionsOfPlantState = 
 				this.harvestConditionsOfPlantStates.computeIfAbsent(plantState, (PlantState<?> plantStateArg) -> ConcurrentHashMap.newKeySet());
-		System.out.println("Harvest Conditions Of PlantState: " + harvestConditionsOfPlantState);
 		return harvestConditionsOfPlantState.add(harvestCondition);
 	}
 	
@@ -54,7 +53,6 @@ public class HarvestConditionsManager implements Listener {
 	
 	@EventHandler
 	public void onHarvestEvent(HarvestEvent event) {
-		System.out.println("HarvestEvent has occured: " + event);
 		if (!event.isCancelled()) {
 			Set<HarvestCondition> harvestConditions = this.harvestConditionsOfPlantStates.remove(event.getPlantState());
 			if (harvestConditions == null) {

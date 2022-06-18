@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
 
+import drherbology.exceptions.parse.ParseException;
 import drherbology.plants.PlantStateDefinition;
 import drherbology.plants.PlantType;
 import drherbology.utils.files.ConfigurationsHelper;
@@ -32,7 +33,7 @@ public class PlantsTypesParser implements Parser<PlantType, MemorySection> {
 		if (plantTypeID == null) {
 			throw new ParseException("Plant Type ID is null!");
 		}
-		System.out.println("Plant Type ID: " + plantTypeID);
+		System.out.println("Loading Plant Type ID: " + plantTypeID);
 		PlantType plantType = new PlantType(plantTypeID);
 		Object statesMSObject = memorySection.get("states");
 		if (statesMSObject == null) {
@@ -49,7 +50,6 @@ public class PlantsTypesParser implements Parser<PlantType, MemorySection> {
 			if (stateObject != null && stateObject instanceof MemorySection) {
 				PlantStateDefinition plantStateDefinition = PlantsStatesDefinitionsParser.getInstance()
 						.parse((MemorySection)stateObject);
-				System.out.println("PlantStateDefinition: " + plantStateDefinition);
 				if (plantStateDefinition == null) {
 					continue;
 				}

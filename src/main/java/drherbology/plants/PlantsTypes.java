@@ -11,6 +11,7 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import drherbology.exceptions.load.LoadPlantException;
 import drherbology.parsers.PlantsTypesParser;
 import drherbology.plants.conditions.ConditionsFactory;
 import drherbology.plants.conditions.harvest.HarvestConditionsFactory;
@@ -38,33 +39,30 @@ public class PlantsTypes implements Reloadable {
 		return instance;
 	}
 	
-	public boolean loadPlant(String filename) {
+	public boolean loadPlant(String filename) throws LoadPlantException {
 		FileConfiguration fileConfig = FileConfigurationsManager.getInstance().getFileConfiguration(filename);
 		if (fileConfig == null) {
 			return false;
 		}
 		for (String key : fileConfig.getKeys(false)) {
-			System.out.println("Values: " + fileConfig.getValues(false));
 			Object valueObject = fileConfig.get(key);
 			if (valueObject == null || !(valueObject instanceof MemorySection)) {
-				// TODO Error loading key plant type
-				System.out.println("Error loading key \"" + key + "\" key plant type!");
-				System.out.println("Key \"" + key + "\" plant type: " + valueObject);
-				continue;
+				throw new LoadPlantException(filename
+						, "Error loading key \"" + key + "\" of the plant type: " + valueObject + " invalid value!");
 			}
 			PlantType plantType = PlantsTypesParser.getInstance().parse((MemorySection)valueObject);
 			if (plantType == null) {
-				// TODO Error parsing key plant type
-				System.out.println("Error parsing key \"" + key + "\" key plant type!");
-				continue;
+				throw new LoadPlantException(filename, "Error loading key \"" + key
+						+ "\" of the plant type: " + valueObject + " couldn't parse plant type!");
 			}
+			System.out.println("Loading Key: " + key + " With Value: " + plantType);
 			this.plantsTypes.put(key, plantType);
 		}
 
 		return true;
 	}
 	
-	public void loadPlants(Collection<String> filenames) {
+	public void loadPlants(Collection<String> filenames) throws LoadPlantException {
 		for (String filename : filenames) {
 			loadPlant(filename);
 		}
@@ -107,15 +105,8 @@ public class PlantsTypes implements Reloadable {
 		return this.loadedFilenames;
 	}
 	
-	public Map<ItemStack, PlantType> getPlantTypesItemStacksMap() {
-		Map<ItemStack, PlantType> plantTypesItemStacksMap = new HashMap<>();
-		for (PlantType plantType : plantsTypes.values()) {
-			ItemStack plantTypeItemStack = plantType.getItemStack();
-			if (plantTypeItemStack != null) {
-				plantTypesItemStacksMap.put(new ItemStack(plantTypeItemStack), plantType);
-			}
-		}
-		return plantTypesItemStacksMap;
+	public Collection<PlantType> getPlantTypes() {
+		return plantsTypes.values();
 	}
 	
 }

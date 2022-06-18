@@ -2,7 +2,6 @@ package drherbology.plants;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.sql.Time;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,7 +32,6 @@ public abstract class AbstractPlantState<T extends PlantStateDefinition> extends
 	}
 	
 	protected boolean startConditions() {
-		System.out.println("Spawn Time: " + getSpawnTime() + " Parsed Spawn Time: " + new Time(getSpawnTime()) + " in start conditions!");
 		if (getSpawnTime() == 0) {
 			setSpawnTime(System.currentTimeMillis());
 		}
@@ -47,11 +45,8 @@ public abstract class AbstractPlantState<T extends PlantStateDefinition> extends
 			haveConditionsStarted = true;
 		}
 		for (ConditionsSet conditionsSet : this.conditionsSetsMap.keySet()) {
-			System.out.println("Spawn Time: " + getSpawnTime() + " Parsed Spawn Time: " + new Time(getSpawnTime()) + " in conditionsSet!");
 			boolean hasOccured = conditionsSet.onStateStart(getSpawnTime());
-			System.out.println("Has occured: " + hasOccured);
 			if (hasOccured) {
-				System.out.println("Yay entered conditions set state start!");
 				long timePassed = conditionsSet.getTimePassed();
 				String nextState = conditionsSetsMap.get(conditionsSet);
 				if (nextState != null) {
@@ -116,7 +111,6 @@ public abstract class AbstractPlantState<T extends PlantStateDefinition> extends
 	}
 	
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("PropertyChangeEvent Occured!");
 		String nextState = conditionsSetsMap.get(evt.getSource());
 		if (nextState != null) {
 			continueToNextState(nextState);

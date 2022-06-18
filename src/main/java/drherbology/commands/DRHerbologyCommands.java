@@ -21,10 +21,7 @@ public class DRHerbologyCommands implements CommandExecutor {
 		Player player = (Player)sender;
 		GUI gui = PlantsGUIManager.getInstance().getGUI();
 		if (gui == null) {
-			System.out.println("GUI is null!");
-			gui = PlantsGUIManager.getInstance().loadGUI(PlantsTypes.getInstance().getPlantTypesItemStacksMap());
-		} else {
-			System.out.println("GUI isn't null!");
+			gui = PlantsGUIManager.getInstance().loadGUI(PlantsTypes.getInstance().getPlantTypes());
 		}
 		player.openInventory(gui.getInventory(player));
 		return true;

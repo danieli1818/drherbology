@@ -1,4 +1,4 @@
-package drherbology.parsers;
+package drherbology.exceptions.parse;
 
 public class ParseException extends RuntimeException {
 

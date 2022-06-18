@@ -19,7 +19,6 @@ public class ModelPlantState extends AbstractPlantState<ModelPlantStateDefinitio
 	
 	public void spawnPlant(Location location) {
 		ModelPlantStateDefinition modelPlantStateDefinition = getPlantStateDefinition();
-		System.out.println("Spawning model: " + modelPlantStateDefinition.getStateModel().toString());
 		Location finalLocation = location.clone();
 		finalLocation.add(modelPlantStateDefinition.getOffsetVector());
 		this.model = location.getWorld().spawn(finalLocation, ArmorStand.class);
@@ -29,11 +28,9 @@ public class ModelPlantState extends AbstractPlantState<ModelPlantStateDefinitio
 		this.model.setCollidable(false);
 		this.model.setGravity(false);
 		finalizeSpawning();
-		System.out.println("Finished Spawning model: " + modelPlantStateDefinition.getStateModel().toString());
 	}
 	
 	private void finalizeSpawning() {
-		System.out.println("Finalizing Spawning with: " + getPlantStateDefinition().getStateModel().getType());
 		this.model.setBoots(getPlantStateDefinition().getStateModel());
 		ModelPlantsListener.getInstance().registerModelPlantState(this, this.model.getLocation());
 		super.startConditions();
@@ -47,7 +44,6 @@ public class ModelPlantState extends AbstractPlantState<ModelPlantStateDefinitio
 	
 	@Override
 	public PlantState<?> transformToPlantStateDefinition(PlantStateDefinition plantStateDefinition) {
-		System.out.println("PlantStateDefinition: " + plantStateDefinition);
 		if (plantStateDefinition == null) {
 			return super.transformToPlantStateDefinition(plantStateDefinition);
 		}
@@ -68,7 +64,6 @@ public class ModelPlantState extends AbstractPlantState<ModelPlantStateDefinitio
 		if (time == 0) {
 			return transformToPlantStateDefinition(plantStateDefinition);
 		}
-		System.out.println("PlantStateDefinition: " + plantStateDefinition);
 		if (plantStateDefinition == null) {
 			return super.transformToPlantStateDefinition(plantStateDefinition, time);
 		}

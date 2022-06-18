@@ -7,6 +7,8 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import drherbology.exceptions.parse.ParseException;
+
 public class ItemStackParser implements Parser<ItemStack, MemorySection> {
 	
 	private static ItemStackParser instance;

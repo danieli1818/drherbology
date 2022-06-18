@@ -52,7 +52,6 @@ public abstract class AbstractPlantStateDefinition implements ConditionsPlantSta
 		for (ConditionsFactory conditionsFactory : conditionsFactoriesSet) {
 			conditionsSet.addCondition(conditionsFactory.createCondition(plantState));
 		}
-		conditionsSet.printConditionsSet();
 		return conditionsSet;
 	}
 	

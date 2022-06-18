@@ -20,14 +20,12 @@ public class MergedTask implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Starting to run!");
 		for (Runnable runnable : this.syncTasks.values()) {
 			SchedulerUtils.getInstance().scheduleSyncTask(0, runnable);
 		}
 		for (Runnable runnable : this.asyncTasks.values()) {
 			runnable.run();
 		}
-		System.out.println("Finished running!");
 	}
 	
 	public boolean addSyncTask(long taskID, Runnable task) {

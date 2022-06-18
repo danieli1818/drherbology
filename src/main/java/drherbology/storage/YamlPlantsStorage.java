@@ -1,6 +1,5 @@
 package drherbology.storage;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -124,7 +123,6 @@ public class YamlPlantsStorage implements PlantsStorage {
 		}
 		try {
 			Long spawnTime = Long.parseLong(typeIDAndStateIDArray[2]);
-			System.out.println("Spawn time: " + spawnTime + " parsed: " + new Time(spawnTime));
 			return plantStateDefinition.getPlantState(spawnTime);
 		} catch (NumberFormatException e) {
 			return plantStateDefinition.getPlantState();

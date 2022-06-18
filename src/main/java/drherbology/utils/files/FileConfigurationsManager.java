@@ -81,9 +81,6 @@ public class FileConfigurationsManager {
 			return null;
 		}
 		String absoluteFilePath = file.getAbsolutePath();
-		System.out.println("Absolute File Path: " + absoluteFilePath);
-		System.out.println("Replace String: " + this.plugin.getDataFolder().getAbsolutePath() + File.separator);
-		System.out.println("Relative File Path: " + absoluteFilePath.replace(this.plugin.getDataFolder().getAbsolutePath() + File.separator, ""));
 		return absoluteFilePath.replace(this.plugin.getDataFolder().getAbsolutePath() + File.separator, "");
 	}
 	
@@ -130,7 +127,6 @@ public class FileConfigurationsManager {
 	
 	public void reloadAllFiles() {
 		reloadFiles(this.configurationFilesNames);
-		System.out.println(this.configurationFilesNames);
 	}
 	
 	public FileConfiguration getFileConfiguration(String name) {

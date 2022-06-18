@@ -6,7 +6,7 @@ import drherbology.commands.DRHerbologyCommands;
 import drherbology.listeners.GeneralPlantsListener;
 import drherbology.listeners.ModelPlantsListener;
 import drherbology.listeners.PlantsLoaderSaverListener;
-import drherbology.management.PlantsGUIManager;
+import drherbology.management.PlantsItemsManager;
 import drherbology.management.PlantsManager;
 import drherbology.plants.PlantsTypes;
 import drherbology.plants.conditions.harvest.HarvestConditionsManager;
@@ -48,24 +48,14 @@ public class DRHerbology extends JavaPlugin {
 		
 		ReloaderManager.getInstance().registerReloadable(PlantsTypes.getInstance());
 		
-		PlantsGUIManager.getInstance(this);
+		PlantsItemsManager.getInstance(this);
 		
-//		FileConfiguration examplePlantTypeFileConfiguration = fcm.getFileConfiguration(typesFolder + "/example_plant.yml");
-//		
-//		Object examplePlantType = examplePlantTypeFileConfiguration.get(examplePlantTypeFileConfiguration.getKeys(false).iterator().next());
-//		
-//		if (examplePlantType instanceof MemorySection) {
-//			System.out.println("ExamplePlantType is MemorySection!");
-//			PlantsTypesParser.getInstance().parse((MemorySection)examplePlantType);
-//		}
-		
-//		PlantsTypes.getInstance().loadExamplePlant();
-		
-		System.out.println(FileConfigurationsManager.getInstance());
-		System.out.println(FileConfigurationsManager.getInstance().getFilenamesUnderDirectory(typesFolder, true));
 		for (String typeFilename : FileConfigurationsManager.getInstance().getFilenamesUnderDirectory(typesFolder, true)) {
+			System.out.println("Loading filename: " + typeFilename);
 			PlantsTypes.getInstance().loadPlant(typeFilename);
 		}
+		
+		PlantsItemsManager.getInstance().loadItems(PlantsTypes.getInstance().getPlantTypes());
 		
 		getCommand("drherbology").setExecutor(new DRHerbologyCommands());
 		

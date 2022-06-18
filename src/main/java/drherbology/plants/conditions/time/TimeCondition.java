@@ -20,14 +20,11 @@ public class TimeCondition extends AbstractCondition implements TimePassConditio
 		long currentTime = System.currentTimeMillis();
 		long timeDiff = currentTime - spawnTime;
 		long timeDiffInTicks = timeDiff / 20;
-		System.out.println("Before scheduling task!");
-		System.out.println("Time diff in ticks: " + timeDiffInTicks);
 		if (timeDiffInTicks > time) {
 			setState(true);
 			return true;
 		}
 		scheduleSettingTrueAsyncTask(time - timeDiffInTicks);
-		System.out.println("After scheduling task!");
 		return false;
 	}
 	

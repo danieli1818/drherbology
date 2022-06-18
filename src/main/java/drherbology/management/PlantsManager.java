@@ -5,9 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
+import drherbology.exceptions.creation.PlantCreationException;
 import drherbology.plants.PlantState;
 import drherbology.plants.PlantStateDefinition;
 import drherbology.plants.PlantType;
@@ -54,21 +56,17 @@ public class PlantsManager implements PropertyChangeListener {
 		return createPlant(location, plantTypeID, null);
 	}
 	
-	public boolean createPlant(Location location, String plantTypeID, String stateID) {
+	public boolean createPlant(Location location, String plantTypeID, String stateID) throws PlantCreationException {
 		PlantType plantType = PlantsTypes.getInstance().getPlantType(plantTypeID);
 		if (plantType == null) {
-			// TODO Plant type doesn't exist error message.
-			System.out.println("Plant type: \"" + plantTypeID + "\" doesn't exist!");
-			return false;
+			throw new PlantCreationException(plantTypeID, "Plant type doesn't exist!");
 		}
 		return createPlant(location, plantType, stateID);
 	}
 	
-	public boolean createPlant(Location location, PlantType plantType, String stateID) {
+	public boolean createPlant(Location location, PlantType plantType, String stateID) throws NullArgumentException, PlantCreationException {
 		if (plantType == null) {
-			// TODO Plant type is null error message.
-			System.out.println("Plant type is null!");
-			return false;
+			throw new NullArgumentException("plantType");
 		}
 		PlantStateDefinition state = null;
 		if (stateID == null) {
@@ -77,23 +75,18 @@ public class PlantsManager implements PropertyChangeListener {
 			state = plantType.getState(stateID);
 		}
 		if (state == null) {
-			// TODO state doesn't exist error message.
-			System.out.println("Plant type doesn't have the state: \"" + stateID + "\"!");
-			return false;
+			throw new PlantCreationException(plantType.getPlantTypeID(), stateID, "State doesn't exist!");
 		}
-		System.out.println("Putting plant!");
 		PlantState<?> plantState = state.getPlantState();
 		return spawnPlant(location, plantState);
 	}
 	
-	public boolean createPlant(Location location, PlantType plantType, String stateID, long time) {
+	public boolean createPlant(Location location, PlantType plantType, String stateID, long time) throws NullArgumentException, PlantCreationException {
 		if (time == 0) {
 			createPlant(location, plantType, stateID);
 		}
 		if (plantType == null) {
-			// TODO Plant type is null error message.
-			System.out.println("Plant type is null!");
-			return false;
+			throw new NullArgumentException("plantType");
 		}
 		PlantStateDefinition state = null;
 		if (stateID == null) {
@@ -102,11 +95,8 @@ public class PlantsManager implements PropertyChangeListener {
 			state = plantType.getState(stateID);
 		}
 		if (state == null) {
-			// TODO state doesn't exist error message.
-			System.out.println("Plant type doesn't have the state: \"" + stateID + "\"!");
-			return false;
+			throw new PlantCreationException(plantType.getPlantTypeID(), stateID, "State doesn't exist!");
 		}
-		System.out.println("Putting plant!");
 		PlantState<?> plantState = state.getPlantState(time);
 		return spawnPlant(location, plantState);
 	}
@@ -118,13 +108,11 @@ public class PlantsManager implements PropertyChangeListener {
 		this.plants.put(location, plantState);
 		plantState.addPropertyChangeListener(this);
 		plantState.spawnPlant(location);
-		System.out.println("Done putting plant!");
 		return true;
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("Entered PropertyChange!");
 		if (!(evt.getSource() instanceof PlantState) || !"nextState".equals(evt.getPropertyName()) || !(evt.getNewValue() instanceof PlantNextStateInfo)) {
 			return;
 		}
@@ -132,14 +120,10 @@ public class PlantsManager implements PropertyChangeListener {
 		Location plantStateLocation = getLocationOfPlantState(plantState);
 		SchedulerUtils.getInstance().scheduleSyncTask(0, () -> {
 			PlantType plantType = plantState.getPlantStateDefinition().getPlantType();
-			System.out.println(evt.getNewValue());
 			PlantNextStateInfo newPlantStateInfo = (PlantNextStateInfo)evt.getNewValue();
 			if (plantState.transformToPlantStateDefinition(plantType.getState(newPlantStateInfo.getNextState()), newPlantStateInfo.getTime()) == null) {
-				System.out.println("Transformation returned null!");
 				despawnPlant(plantState);
 				createPlant(plantStateLocation, plantType, newPlantStateInfo.getNextState(), newPlantStateInfo.getTime());
-			} else {
-				System.out.println("Transformation returned a PlantState!");
 			}
 		});
 	}
@@ -168,9 +152,7 @@ public class PlantsManager implements PropertyChangeListener {
 		if (chunkPlants == null) {
 			return false;
 		}
-		System.out.println("Loading Chunk!");
 		for (Map.Entry<Location, PlantState<?>> chunkPlantEntry : chunkPlants.entrySet()) {
-			System.out.println("Loading plant!");
 			Location location = chunkPlantEntry.getKey();
 			PlantState<?> chunkPlant = chunkPlantEntry.getValue();
 			spawnPlant(location, chunkPlant);
@@ -201,15 +183,12 @@ public class PlantsManager implements PropertyChangeListener {
 	}
 	
 	public boolean saveAll() {
-		System.out.println("Saving all!");
 		for (Map.Entry<Location, PlantState<?>> plantStateEntry : this.plants.entrySet()) {
-			System.out.println("Saving a plant!");
 			Location location = plantStateEntry.getKey();
 			PlantState<?> plant = plantStateEntry.getValue();
-			System.out.println("Storing: " + this.storage.store(location, plant));
+			this.storage.store(location, plant);
 			plant.despawnPlant();
 		}
-		System.out.println("Finished saving all!");
 		return true;
 	}
 	

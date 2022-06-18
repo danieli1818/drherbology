@@ -83,14 +83,7 @@ public class ConditionsSet extends AbstractPropertyChangeObservable implements P
 	}
 	
 	public long getTimePassed() {
-		long timePassed = timePassConditions.stream().map((TimePassCondition condition) -> condition.getTimePassed()).reduce((long)0, (Long num1, Long num2) -> Math.max(num1, num2));
-		System.out.println("Size of conditions: " + timePassConditions.size());
-		System.out.println("Conditions:");
-		for (Condition condition : timePassConditions) {
-			System.out.println("Condition: " + condition);
-		}
-		System.out.println("Time Passed: " + timePassed);
-		return timePassed;
+		return timePassConditions.stream().map((TimePassCondition condition) -> condition.getTimePassed()).reduce((long)0, (Long num1, Long num2) -> Math.max(num1, num2));
 	}
 	
 	public void printConditionsSet() {

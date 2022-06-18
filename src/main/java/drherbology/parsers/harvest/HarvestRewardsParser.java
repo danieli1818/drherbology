@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.MemorySection;
 
-import drherbology.parsers.ParseException;
+import drherbology.exceptions.parse.ParseException;
 import drherbology.parsers.Parser;
 import drherbology.parsers.harvest.types.ItemHarvestRewardParser;
 import drherbology.plants.harvest.HarvestRewardFunction;

@@ -7,6 +7,7 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import drherbology.exceptions.parse.ParseException;
 import drherbology.parsers.animations.AnimationsParser;
 import drherbology.parsers.harvest.HarvestRewardsParser;
 import drherbology.plants.ConditionsPlantStateDefinition;
@@ -88,16 +89,14 @@ public class PlantsStatesDefinitionsParser implements Parser<PlantStateDefinitio
 	}
 	
 	private ConditionsPlantStateDefinition parseModel(MemorySection memorySection) {
-		String itemStackString = memorySection.getString("item");
-		if (itemStackString == null) {
+		MemorySection itemMS = ConfigurationsHelper.getInstance().getMemorySection(memorySection, "item");
+		if (itemMS == null) {
 			throw new ParseException("Missing model plant state definition's item!");
 		}
-		itemStackString = itemStackString.toUpperCase();
-		Material material = Material.valueOf(itemStackString);
-		if (material == null) {
-			throw new ParseException("Unknown model plant state definition's item: " + material + "!");
+		ItemStack itemStack = ItemStackParser.getInstance().parse(itemMS);
+		if (itemStack == null) {
+			throw new ParseException("Invalid model plant state definition's item!");
 		}
-		ItemStack itemStack = new ItemStack(material);
 		String vectorOffsetString = memorySection.getString("offset");
 		if (vectorOffsetString == null) {
 			return new ModelPlantStateDefinition(itemStack);

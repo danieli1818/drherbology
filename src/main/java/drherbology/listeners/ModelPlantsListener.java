@@ -32,15 +32,11 @@ public class ModelPlantsListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteractEntityEvent(PlayerInteractAtEntityEvent event) {
-		System.out.println("Event has occured: " + event);
 		Entity entity = event.getRightClicked();
 		if (!(entity instanceof ArmorStand)) {
 			return;
 		}
 		ArmorStand armorStand = (ArmorStand)entity;
-		System.out.println(this.modelPlantStates);
-		System.out.println(this.modelPlantStates.keySet());
-		System.out.println(this.modelPlantStates.values());
 		ModelPlantState modelPlantState = this.modelPlantStates.get(armorStand.getLocation());
 		if (modelPlantState == null) {
 			return;
@@ -48,7 +44,6 @@ public class ModelPlantsListener implements Listener {
 		event.setCancelled(true);
 		PlayerInventory playerInventory = event.getPlayer().getInventory();
 		modelPlantState.onInteract(event.getPlayer(), playerInventory.getItemInMainHand(), playerInventory.getItemInOffHand());
-		System.out.println(event);
 	}
 	
 	public ModelPlantState registerModelPlantState(ModelPlantState modelPlantState, Location location) {

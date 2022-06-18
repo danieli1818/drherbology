@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.MemorySection;
 
-import drherbology.parsers.ParseException;
+import drherbology.exceptions.parse.ParseException;
 import drherbology.parsers.Parser;
 import drherbology.parsers.animations.types.HarvestConditionsParser;
 import drherbology.parsers.animations.types.TimeConditionsParser;
@@ -37,7 +37,6 @@ public class AnimationsParser implements Parser<Animation, MemorySection> {
 	public Animation parse(MemorySection memorySection) throws ParseException {
 		String toStateID = memorySection.getString("to_state");
 		if (toStateID == null) {
-			System.out.println(memorySection.getName());
 			throw new ParseException("To state is missing!");
 		}
 		Object conditionsSetObject = memorySection.get("conditions");

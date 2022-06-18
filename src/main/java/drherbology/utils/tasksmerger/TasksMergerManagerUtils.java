@@ -33,9 +33,7 @@ public class TasksMergerManagerUtils {
 				this.tasksByTimeMap.remove(timeToSchedule);
 			});
 			this.tasksByTimeMap.put(timeToSchedule, mt);
-			System.out.println("Before scheduling task with scheduler!");
-			System.out.println(SchedulerUtils.getInstance().scheduleAsyncTask(time, mt));
-			System.out.println("After scheduling task with scheduler!");
+			SchedulerUtils.getInstance().scheduleAsyncTask(time, mt);
 		}
 		mt.addSyncTask(id, task);
 		this.tasksIDsToTimesMap.put(id, timeToSchedule);
@@ -55,9 +53,7 @@ public class TasksMergerManagerUtils {
 				this.tasksByTimeMap.remove(timeToSchedule);
 			});
 			this.tasksByTimeMap.put(timeToSchedule, mt);
-			System.out.println("Before scheduling task with scheduler!");
-			System.out.println(SchedulerUtils.getInstance().scheduleAsyncTask(time, mt));
-			System.out.println("After scheduling task with scheduler!");
+			SchedulerUtils.getInstance().scheduleAsyncTask(time, mt);
 		}
 		mt.addAsyncTask(id, task);
 		this.tasksIDsToTimesMap.put(id, timeToSchedule);
